@@ -3,32 +3,52 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 /*global React */
 /*global multiply */
 // eslint-disable-next-line no-unused-vars
-function isValidBinaryNumber(string) {
-  return (/^[01]$/.test(string)
-  );
+function getErrorMessage(string, mode) {
+  var n = Number(string);
+
+  if (!string) {
+    return 'Field must not be empty!';
+  }
+
+  if (mode == 'binary') {
+    if (!/^[01]+$/.test(string)) {
+      return 'Value is not a valid binary number!';
+    } else if (string.length > 16) {
+      return 'Number exceeds 16 bits!';
+    }
+  }
+
+  if (n < -2147483648 || n > 2147483647) {
+    return 'Number exceeds 16 bits!';
+  }
+
+  return '';
 }
 
 function TextInput(_ref) {
   var id = _ref.id,
       label = _ref.label,
-      error = _ref.error;
+      error = _ref.error,
+      clearError = _ref.clearError;
 
   return React.createElement(
-    "div",
-    { className: "field" },
+    'div',
+    { className: 'field' },
     React.createElement(
-      "label",
-      { htmlFor: id, className: "label" },
+      'label',
+      { htmlFor: id, className: 'label' },
       label
     ),
     React.createElement(
-      "div",
-      { className: "control" },
-      React.createElement("input", { type: "number", className: 'input' + (error ? ' is-danger' : ''), id: id, name: id })
+      'div',
+      { className: 'control' },
+      React.createElement('input', { type: 'number', className: 'input' + (error ? ' is-danger' : ''), id: id, name: id, onChange: function onChange() {
+          return clearError(id);
+        } })
     ),
     React.createElement(
-      "p",
-      { className: "help is-danger" },
+      'p',
+      { className: 'help is-danger' },
       error
     )
   );
@@ -50,67 +70,68 @@ function Form() {
 
     var temp = {};
 
-    if (!op1) {
-      temp.op1 = 'Operand 1 must not be empty!';
-    } else if (mode == 'binary' && !isValidBinaryNumber(op1)) {
-      temp.op1 = 'Operand 1 is not a valid binary number!';
-    }
+    temp.op1 = getErrorMessage(op1, mode);
+    temp.op2 = getErrorMessage(op2, mode);
 
-    if (!op2) {
-      temp.op2 = 'Operand 2 must not be empty!';
-    } else if (mode == 'binary' && !isValidBinaryNumber(op2)) {
-      temp.op2 = 'Operand 2 is not a valid binary number!';
-    }
-
-    if (!Object.keys(temp).length) {
+    if (temp.op1 === '' && temp.op1 === temp.op2) {
       console.log(multiply(op1, op2, mode));
     }
 
     setErrors(temp);
   };
 
+  var clearError = function clearError(key) {
+    var temp = {};
+    Object.assign(temp, errors);
+    temp[key] = '';
+
+    setErrors(temp);
+  };
+
   return React.createElement(
-    "form",
-    { className: "", onSubmit: handleSubmit },
-    React.createElement(TextInput, { id: "op1", label: "Operand 1:", error: errors.op1 }),
-    React.createElement(TextInput, { id: "op2", label: "Operand 2:", error: errors.op2 }),
+    'form',
+    { className: '', onSubmit: handleSubmit },
+    React.createElement(TextInput, { id: 'op1', label: 'Operand 1:', error: errors.op1, clearError: clearError }),
+    React.createElement(TextInput, { id: 'op2', label: 'Operand 2:', error: errors.op2, clearError: clearError }),
     React.createElement(
-      "div",
-      { className: "field" },
+      'div',
+      { className: 'field' },
       React.createElement(
-        "p",
-        { className: "label" },
-        "Input Mode"
+        'p',
+        { className: 'label' },
+        'Input Mode'
       ),
       React.createElement(
-        "div",
-        { className: "control" },
+        'div',
+        { className: 'control' },
         React.createElement(
-          "label",
-          { className: "radio" },
-          React.createElement("input", { type: "radio", value: "decimal", name: "mode", defaultChecked: true }),
-          "Decimal"
+          'label',
+          { className: 'radio' },
+          React.createElement('input', { type: 'radio', value: 'decimal', name: 'mode', defaultChecked: true }),
+          'Decimal'
         ),
         React.createElement(
-          "label",
-          { className: "radio" },
-          React.createElement("input", { type: "radio", value: "binary", name: "mode" }),
-          "Binary"
+          'label',
+          { className: 'radio' },
+          React.createElement('input', { type: 'radio', value: 'binary', name: 'mode' }),
+          'Binary'
         )
       )
     ),
     React.createElement(
-      "div",
-      { className: "field is-grouped" },
+      'div',
+      { className: 'field is-grouped' },
       React.createElement(
-        "p",
-        { className: "control" },
-        React.createElement("input", { type: "submit", className: "button is-primary" })
+        'p',
+        { className: 'control' },
+        React.createElement('input', { type: 'submit', className: 'button is-primary' })
       ),
       React.createElement(
-        "p",
-        { className: "control" },
-        React.createElement("input", { type: "reset", className: "button is-light" })
+        'p',
+        { className: 'control' },
+        React.createElement('input', { type: 'reset', className: 'button is-light', onClick: function onClick() {
+            return setErrors({});
+          } })
       )
     )
   );

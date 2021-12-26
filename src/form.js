@@ -1,16 +1,34 @@
 /*global React */
 /*global multiply */
 // eslint-disable-next-line no-unused-vars
-function isValidBinaryNumber(string) {
-  return /^[01]$/.test(string);
+function getErrorMessage(string, mode) {
+  const n = Number(string)
+
+  if (!string) {
+    return 'Field must not be empty!';
+  }
+
+  if (mode == 'binary') {
+    if (!/^[01]+$/.test(string)) {
+      return 'Value is not a valid binary number!';
+    } else if (string.length > 16) {
+      return 'Number exceeds 16 bits!';
+    }
+  }
+
+  if (n < -2147483648 || n > 2147483647) {
+    return 'Number exceeds 16 bits!';
+  }
+
+  return ''
 }
 
-function TextInput({ id, label, error }) {
+function TextInput({ id, label, error, clearError }) {
   return (
     <div className="field">
       <label htmlFor={id} className="label">{label}</label>
       <div className="control">
-        <input type="number" className={'input' + (error ? ' is-danger' : '')} id={id} name={id} />
+        <input type="number" className={'input' + (error ? ' is-danger' : '')} id={id} name={id} onChange={() => clearError(id)} />
       </div>
       <p className="help is-danger">{error}</p>
     </div>
@@ -24,29 +42,28 @@ function Form() {
     const { op1, op2, mode } = Object.fromEntries(new FormData(e.target));
     const temp = {};
 
-    if (!op1) {
-      temp.op1 = 'Operand 1 must not be empty!';
-    } else if (mode == 'binary' && !isValidBinaryNumber(op1)) {
-      temp.op1 = 'Operand 1 is not a valid binary number!';
-    }
+    temp.op1 = getErrorMessage(op1, mode)
+    temp.op2 = getErrorMessage(op2, mode)
 
-    if (!op2) {
-      temp.op2 = 'Operand 2 must not be empty!';
-    } else if (mode == 'binary' && !isValidBinaryNumber(op2)) {
-      temp.op2 = 'Operand 2 is not a valid binary number!';
-    }
-
-    if (!Object.keys(temp).length) {
+    if (temp.op1 === '' && temp.op1 === temp.op2) {
       console.log(multiply(op1, op2, mode));
     }
 
     setErrors(temp);
   };
 
+  const clearError = key => {
+    const temp = {};
+    Object.assign(temp, errors)
+    temp[key] = ''
+
+    setErrors(temp);
+  }
+
   return (
     <form className="" onSubmit={handleSubmit}>
-      <TextInput id="op1" label="Operand 1:" error={errors.op1} />
-      <TextInput id="op2" label="Operand 2:" error={errors.op2} />
+      <TextInput id="op1" label="Operand 1:" error={errors.op1} clearError={clearError} />
+      <TextInput id="op2" label="Operand 2:" error={errors.op2} clearError={clearError} />
 
       <div className="field">
         <p className="label">Input Mode</p>
@@ -67,7 +84,7 @@ function Form() {
           <input type="submit" className="button is-primary" />
         </p>
         <p className="control">
-          <input type="reset" className="button is-light" />
+          <input type="reset" className="button is-light" onClick={() => setErrors({})}/>
         </p>
       </div>
     </form>
