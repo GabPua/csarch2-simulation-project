@@ -90,7 +90,7 @@ function Form() {
 
   return React.createElement(
     'form',
-    { className: '', onSubmit: handleSubmit },
+    { className: 'box', onSubmit: handleSubmit },
     React.createElement(TextInput, { id: 'op1', label: 'Operand 1:', error: errors.op1, clearError: clearError }),
     React.createElement(TextInput, { id: 'op2', label: 'Operand 2:', error: errors.op2, clearError: clearError }),
     React.createElement(
@@ -124,7 +124,7 @@ function Form() {
       React.createElement(
         'p',
         { className: 'control' },
-        React.createElement('input', { type: 'submit', className: 'button is-primary' })
+        React.createElement('input', { type: 'submit', className: 'button is-primary', value: 'Compute' })
       ),
       React.createElement(
         'p',

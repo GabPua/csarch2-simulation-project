@@ -61,7 +61,7 @@ function Form() {
   }
 
   return (
-    <form className="" onSubmit={handleSubmit}>
+    <form className="box" onSubmit={handleSubmit}>
       <TextInput id="op1" label="Operand 1:" error={errors.op1} clearError={clearError} />
       <TextInput id="op2" label="Operand 2:" error={errors.op2} clearError={clearError} />
 
@@ -81,7 +81,7 @@ function Form() {
 
       <div className="field is-grouped">
         <p className="control">
-          <input type="submit" className="button is-primary" />
+          <input type="submit" className="button is-primary" value="Compute" />
         </p>
         <p className="control">
           <input type="reset" className="button is-light" onClick={() => setErrors({})}/>
