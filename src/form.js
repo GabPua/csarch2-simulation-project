@@ -1,8 +1,7 @@
 /*global React */
-/*global multiply */
 // eslint-disable-next-line no-unused-vars
 function getErrorMessage(string, mode) {
-  const n = Number(string)
+  const n = Number(string);
 
   if (!string) {
     return 'Field must not be empty!';
@@ -20,7 +19,7 @@ function getErrorMessage(string, mode) {
     return 'Number exceeds 16 bits!';
   }
 
-  return ''
+  return '';
 }
 
 function TextInput({ id, label, error, clearError }) {
@@ -35,18 +34,18 @@ function TextInput({ id, label, error, clearError }) {
   );
 }
 
-function Form() {
+function Form({ submitHandler }) {
   const [errors, setErrors] = React.useState({});
   const handleSubmit = e => {
     e.preventDefault();
     const { op1, op2, mode } = Object.fromEntries(new FormData(e.target));
     const temp = {};
 
-    temp.op1 = getErrorMessage(op1, mode)
-    temp.op2 = getErrorMessage(op2, mode)
+    temp.op1 = getErrorMessage(op1, mode);
+    temp.op2 = getErrorMessage(op2, mode);
 
     if (temp.op1 === '' && temp.op1 === temp.op2) {
-      console.log(multiply(op1, op2, mode));
+      submitHandler(op1, op2, mode);
     }
 
     setErrors(temp);
@@ -54,11 +53,10 @@ function Form() {
 
   const clearError = key => {
     const temp = {};
-    Object.assign(temp, errors)
-    temp[key] = ''
-
+    Object.assign(temp, errors);
+    temp[key] = '';
     setErrors(temp);
-  }
+  };
 
   return (
     <form className="box" onSubmit={handleSubmit}>

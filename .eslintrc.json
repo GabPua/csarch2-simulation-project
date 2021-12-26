@@ -2,15 +2,14 @@
   "ignorePatterns": [
     "/prod/*"
   ],
-  "plugins": ["react"],
+  "plugins": [
+    "react"
+  ],
   "env": {
     "browser": true,
     "es2021": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/jsx-uses-react"
-  ],
+  "extends": [],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true

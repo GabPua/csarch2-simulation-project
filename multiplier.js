@@ -87,3 +87,21 @@ function multiply(op1, op2, mode) {
 
   return result;
 }
+
+// utils
+function downloadComputation(operands, steps) {
+  for (let i = 0; i < steps.length; i++) {
+    steps[i] = steps[i].join(' ');
+  }
+  steps.unshift(`Operand 1: ${operands[0]}`, `Operand 2: ${operands[1]}\n`);
+
+  const text = steps.join('\n');
+  
+  const element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', 'Computation.txt');
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
