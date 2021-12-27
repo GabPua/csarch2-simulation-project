@@ -7,14 +7,15 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 function NavButton(_ref) {
   var icon = _ref.icon,
       style = _ref.style,
-      clickHandler = _ref.clickHandler;
+      clickHandler = _ref.clickHandler,
+      isDisabled = _ref.isDisabled;
 
   return React.createElement(
     "p",
     { className: "control" },
     React.createElement(
       "button",
-      { type: "button", className: "button " + style, onClick: clickHandler },
+      { type: "button", className: "button " + style, onClick: clickHandler, disabled: isDisabled },
       React.createElement(
         "span",
         { className: "icon is-medium" },
@@ -35,9 +36,15 @@ function App() {
       steps = _React$useState4[0],
       setSteps = _React$useState4[1];
 
+  var _React$useState5 = React.useState(false),
+      _React$useState6 = _slicedToArray(_React$useState5, 2),
+      isComputed = _React$useState6[0],
+      setIsComputed = _React$useState6[1];
+
   var submitHandler = function submitHandler(op1, op2, mode) {
     setSteps(multiply(op1, op2, mode));
     setOperands([op1, op2]);
+    setIsComputed(true);
   };
 
   return React.createElement(
@@ -47,20 +54,22 @@ function App() {
     React.createElement(
       "div",
       { className: "column is-flex is-flex-direction-column is-justify-content-center" },
-      React.createElement(Form, { submitHandler: submitHandler }),
+      React.createElement(Form, { submitHandler: submitHandler, navDisabler: function navDisabler() {
+          return setIsComputed(false);
+        } }),
       React.createElement(
         "div",
         { className: "px-5 is-flex is-justify-content-space-between" },
         React.createElement(
           "div",
           { className: "field is-grouped" },
-          React.createElement(NavButton, { icon: "fa-arrow-left", style: "is-light" }),
-          React.createElement(NavButton, { icon: "fa-play", style: "is-light" }),
-          React.createElement(NavButton, { icon: "fa-arrow-right", style: "is-light" })
+          React.createElement(NavButton, { icon: "fa-arrow-left", style: "is-light", isDisabled: !isComputed }),
+          React.createElement(NavButton, { icon: "fa-play", style: "is-light", isDisabled: !isComputed }),
+          React.createElement(NavButton, { icon: "fa-arrow-right", style: "is-light", isDisabled: !isComputed })
         ),
         React.createElement(NavButton, { icon: "fa-download", style: "is-link", clickHandler: function clickHandler() {
             return downloadComputation(operands, steps);
-          } })
+          }, isDisabled: !isComputed })
       )
     )
   );

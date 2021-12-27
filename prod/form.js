@@ -28,7 +28,7 @@ function TextInput(_ref) {
   var id = _ref.id,
       label = _ref.label,
       error = _ref.error,
-      clearError = _ref.clearError;
+      changeHandler = _ref.changeHandler;
 
   return React.createElement(
     'div',
@@ -42,7 +42,7 @@ function TextInput(_ref) {
       'div',
       { className: 'control' },
       React.createElement('input', { type: 'number', className: 'input' + (error ? ' is-danger' : ''), id: id, name: id, onChange: function onChange() {
-          return clearError(id);
+          return changeHandler(id);
         } })
     ),
     React.createElement(
@@ -54,7 +54,8 @@ function TextInput(_ref) {
 }
 
 function Form(_ref2) {
-  var submitHandler = _ref2.submitHandler;
+  var submitHandler = _ref2.submitHandler,
+      navDisabler = _ref2.navDisabler;
 
   var _React$useState = React.useState({}),
       _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -81,18 +82,19 @@ function Form(_ref2) {
     setErrors(temp);
   };
 
-  var clearError = function clearError(key) {
+  var handleChange = function handleChange(key) {
     var temp = {};
     Object.assign(temp, errors);
     temp[key] = '';
     setErrors(temp);
+    navDisabler();
   };
 
   return React.createElement(
     'form',
     { className: 'box', onSubmit: handleSubmit },
-    React.createElement(TextInput, { id: 'op1', label: 'Operand 1:', error: errors.op1, clearError: clearError }),
-    React.createElement(TextInput, { id: 'op2', label: 'Operand 2:', error: errors.op2, clearError: clearError }),
+    React.createElement(TextInput, { id: 'op1', label: 'Operand 1:', error: errors.op1, changeHandler: handleChange }),
+    React.createElement(TextInput, { id: 'op2', label: 'Operand 2:', error: errors.op2, changeHandler: handleChange }),
     React.createElement(
       'div',
       { className: 'field' },

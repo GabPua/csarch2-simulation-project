@@ -22,19 +22,19 @@ function getErrorMessage(string, mode) {
   return '';
 }
 
-function TextInput({ id, label, error, clearError }) {
+function TextInput({ id, label, error, changeHandler }) {
   return (
     <div className="field">
       <label htmlFor={id} className="label">{label}</label>
       <div className="control">
-        <input type="number" className={'input' + (error ? ' is-danger' : '')} id={id} name={id} onChange={() => clearError(id)} />
+        <input type="number" className={'input' + (error ? ' is-danger' : '')} id={id} name={id} onChange={() => changeHandler(id)} />
       </div>
       <p className="help is-danger">{error}</p>
     </div>
   );
 }
 
-function Form({ submitHandler }) {
+function Form({ submitHandler, navDisabler }) {
   const [errors, setErrors] = React.useState({});
   const handleSubmit = e => {
     e.preventDefault();
@@ -51,17 +51,18 @@ function Form({ submitHandler }) {
     setErrors(temp);
   };
 
-  const clearError = key => {
+  const handleChange = key => {
     const temp = {};
     Object.assign(temp, errors);
     temp[key] = '';
     setErrors(temp);
+    navDisabler();
   };
 
   return (
     <form className="box" onSubmit={handleSubmit}>
-      <TextInput id="op1" label="Operand 1:" error={errors.op1} clearError={clearError} />
-      <TextInput id="op2" label="Operand 2:" error={errors.op2} clearError={clearError} />
+      <TextInput id="op1" label="Operand 1:" error={errors.op1} changeHandler={handleChange} />
+      <TextInput id="op2" label="Operand 2:" error={errors.op2} changeHandler={handleChange} />
 
       <div className="field">
         <p className="label">Input Mode</p>
