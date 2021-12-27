@@ -29,7 +29,7 @@ function App() {
 
   return (
     <div className="columns" style={{ 'minHeight': '100vh' }}>
-      <div className="column">
+      <div className="column is-flex is-align-content-center is-justify-content-center is-align-items-center">
         <Display step={steps[counter]} />
       </div>
 
@@ -37,10 +37,11 @@ function App() {
         <Form submitHandler={submitHandler} navDisabler={() => setIsComputed(false)} />
         <div className="px-5 is-flex is-justify-content-space-between">
           <div className="field is-grouped">
-            <NavButton icon="fa-arrow-left" style="is-light" onClick={() => setCounter(counter - 1)} disabled={!isComputed} />
+            <NavButton icon="fa-arrow-left" style="is-light" onClick={() => setCounter(counter - 1)} disabled={!isComputed || counter == 0} />
             <NavButton icon="fa-play" style="is-light" disabled={!isComputed} />
-            <NavButton icon="fa-arrow-right" style="is-light" onClick={() => setCounter(counter + 1)} disabled={!isComputed} />
+            <NavButton icon="fa-arrow-right" style="is-light" onClick={() => setCounter(counter + 1)} disabled={!isComputed || counter == steps.length - 1} />
           </div>
+          <p className={isComputed? '' : 'has-text-grey'}>Step {counter} of {steps.length - 1}</p>
           <NavButton icon="fa-download" style="is-link" onClick={() => downloadComputation(operands, steps)} disabled={!isComputed} />
         </div>
       </div>

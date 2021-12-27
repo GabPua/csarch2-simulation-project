@@ -58,7 +58,7 @@ function App() {
     { className: "columns", style: { 'minHeight': '100vh' } },
     React.createElement(
       "div",
-      { className: "column" },
+      { className: "column is-flex is-align-content-center is-justify-content-center is-align-items-center" },
       React.createElement(Display, { step: steps[counter] })
     ),
     React.createElement(
@@ -75,11 +75,19 @@ function App() {
           { className: "field is-grouped" },
           React.createElement(NavButton, { icon: "fa-arrow-left", style: "is-light", onClick: function onClick() {
               return setCounter(counter - 1);
-            }, disabled: !isComputed }),
+            }, disabled: !isComputed || counter == 0 }),
           React.createElement(NavButton, { icon: "fa-play", style: "is-light", disabled: !isComputed }),
           React.createElement(NavButton, { icon: "fa-arrow-right", style: "is-light", onClick: function onClick() {
               return setCounter(counter + 1);
-            }, disabled: !isComputed })
+            }, disabled: !isComputed || counter == steps.length - 1 })
+        ),
+        React.createElement(
+          "p",
+          { className: isComputed ? '' : 'has-text-grey' },
+          "Step ",
+          counter,
+          " of ",
+          steps.length - 1
         ),
         React.createElement(NavButton, { icon: "fa-download", style: "is-link", onClick: function onClick() {
             return downloadComputation(operands, steps);

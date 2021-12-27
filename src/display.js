@@ -8,9 +8,7 @@ function Table({ title, data }) {
     <table className="table is-bordered">
       <thead><tr><th colSpan={data.length}>{title}</th></tr></thead>
       <tbody>
-        <tr>
-          {cells}
-        </tr>
+        <tr>{cells}</tr>
       </tbody>
     </table>
   );
@@ -18,10 +16,16 @@ function Table({ title, data }) {
 
 function Display({ step }) {
   return (
-    <div>
-      <Table title="A" data={step[0]} />
-      <Table title="Q" data={step[1]} />
-      <Table title="Q0" data={step[2]} />
+    <div className="columns">
+      <div className="column is-narrow">
+        <Table title="A" data={step[0]} />
+      </div>
+      <div className="column is-narrow">
+        <Table title="Q" data={step[1]} />
+      </div>
+      <div className="column is-narrow">
+        <Table title="Q0" data={step[2]} />
+      </div>
     </div>
   );
 }

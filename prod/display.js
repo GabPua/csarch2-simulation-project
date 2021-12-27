@@ -44,9 +44,21 @@ function Display(_ref2) {
 
   return React.createElement(
     "div",
-    null,
-    React.createElement(Table, { title: "A", data: step[0] }),
-    React.createElement(Table, { title: "Q", data: step[1] }),
-    React.createElement(Table, { title: "Q0", data: step[2] })
+    { className: "columns" },
+    React.createElement(
+      "div",
+      { className: "column is-narrow" },
+      React.createElement(Table, { title: "A", data: step[0] })
+    ),
+    React.createElement(
+      "div",
+      { className: "column is-narrow" },
+      React.createElement(Table, { title: "Q", data: step[1] })
+    ),
+    React.createElement(
+      "div",
+      { className: "column is-narrow" },
+      React.createElement(Table, { title: "Q0", data: step[2] })
+    )
   );
 }
