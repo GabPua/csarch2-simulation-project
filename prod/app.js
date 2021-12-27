@@ -53,6 +53,12 @@ function App() {
     setCounter(0);
   };
 
+  var resetStates = function resetStates() {
+    setSteps([['0', '0', '0']]);
+    setIsComputed(false);
+    setCounter(0);
+  };
+
   return React.createElement(
     "div",
     { className: "columns", style: { 'minHeight': '100vh' } },
@@ -64,9 +70,7 @@ function App() {
     React.createElement(
       "div",
       { className: "column is-3 is-flex is-flex-direction-column is-justify-content-center" },
-      React.createElement(Form, { submitHandler: submitHandler, navDisabler: function navDisabler() {
-          return setIsComputed(false);
-        } }),
+      React.createElement(Form, { submitHandler: submitHandler, resetStates: resetStates }),
       React.createElement(
         "div",
         { className: "px-5 is-flex is-justify-content-space-between" },

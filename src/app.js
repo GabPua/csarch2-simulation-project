@@ -27,6 +27,12 @@ function App() {
     setCounter(0);
   };
 
+  const resetStates = () => {
+    setSteps([['0', '0', '0']]);
+    setIsComputed(false);
+    setCounter(0);
+  };
+
   return (
     <div className="columns" style={{ 'minHeight': '100vh' }}>
       <div className="column is-flex is-align-content-center is-justify-content-center is-align-items-center">
@@ -34,7 +40,7 @@ function App() {
       </div>
 
       <div className="column is-3 is-flex is-flex-direction-column is-justify-content-center">
-        <Form submitHandler={submitHandler} navDisabler={() => setIsComputed(false)} />
+        <Form submitHandler={submitHandler} resetStates={resetStates} />
         <div className="px-5 is-flex is-justify-content-space-between">
           <div className="field is-grouped">
             <NavButton icon="fa-arrow-left" style="is-light" onClick={() => setCounter(counter - 1)} disabled={!isComputed || counter == 0} />

@@ -34,7 +34,7 @@ function TextInput({ id, label, error, changeHandler }) {
   );
 }
 
-function Form({ submitHandler, navDisabler }) {
+function Form({ submitHandler, resetStates }) {
   const [errors, setErrors] = React.useState({});
   const handleSubmit = e => {
     e.preventDefault();
@@ -56,7 +56,7 @@ function Form({ submitHandler, navDisabler }) {
     Object.assign(temp, errors);
     temp[key] = '';
     setErrors(temp);
-    navDisabler();
+    resetStates();
   };
 
   return (
@@ -66,7 +66,7 @@ function Form({ submitHandler, navDisabler }) {
 
       <div className="field">
         <p className="label">Input Mode</p>
-        <div className="control">
+        <div className="control" onChange={handleChange}>
           <label className="radio">
             <input type="radio" value="decimal" name="mode" defaultChecked />
             Decimal

@@ -55,7 +55,7 @@ function TextInput(_ref) {
 
 function Form(_ref2) {
   var submitHandler = _ref2.submitHandler,
-      navDisabler = _ref2.navDisabler;
+      resetStates = _ref2.resetStates;
 
   var _React$useState = React.useState({}),
       _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -87,7 +87,7 @@ function Form(_ref2) {
     Object.assign(temp, errors);
     temp[key] = '';
     setErrors(temp);
-    navDisabler();
+    resetStates();
   };
 
   return React.createElement(
@@ -105,7 +105,7 @@ function Form(_ref2) {
       ),
       React.createElement(
         'div',
-        { className: 'control' },
+        { className: 'control', onChange: handleChange },
         React.createElement(
           'label',
           { className: 'radio' },
