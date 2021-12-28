@@ -16,6 +16,7 @@ function NavButton({ icon, style, onClick, disabled, id }) {
 
 function App() {
   const [operands, setOperands] = React.useState([]);
+  const [mode, setMode] = React.useState('Decimal');
   const [steps, setSteps] = React.useState([['0', '0', '0']]);
   const [isComputed, setIsComputed] = React.useState(false);
   const [counter, setCounter] = React.useState(0);
@@ -23,6 +24,7 @@ function App() {
   const submitHandler = (op1, op2, mode) => {
     setSteps(multiply(op1, op2, mode));
     setOperands([op1, op2]);
+    setMode(mode);
     setIsComputed(true);
     setCounter(0);
   };
@@ -61,7 +63,7 @@ function App() {
             <NavButton icon="fa-arrow-right" style="is-light" onClick={() => setCounter(counter + 1)} disabled={!isComputed || counter == steps.length - 1} id="next-btn" />
           </div>
           <p className={isComputed? '' : 'has-text-grey'}>Step {counter} of {steps.length - 1}</p>
-          <NavButton icon="fa-download" style="is-link" onClick={() => downloadComputation(operands, steps)} disabled={!isComputed} />
+          <NavButton icon="fa-download" style="is-link" onClick={() => downloadComputation(operands, mode, steps)} disabled={!isComputed} />
         </div>
       </div>
       <div className="column is-1"></div>
