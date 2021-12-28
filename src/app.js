@@ -34,14 +34,14 @@ function App() {
     setIsComputed(false);
     setCounter(0);
   };
-  
+
   React.useEffect(() => {
     const next = document.getElementById('next-btn');
     const prev = document.getElementById('prev-btn');
 
     function onArrowPress(e) {
       if (e.key === 'ArrowLeft') prev.click();
-      else if (e.key === 'ArrowRight')  next.click();
+      else if (e.key === 'ArrowRight') next.click();
     }
 
     document.addEventListener('keydown', onArrowPress);
@@ -50,11 +50,7 @@ function App() {
 
   return (
     <div className="columns" style={{ 'minHeight': '100vh' }}>
-      <div className="column is-flex is-align-content-center is-justify-content-center is-align-items-center">
-        <Display step={steps[counter]} />
-      </div>
-
-      <div className="column is-3 is-flex is-flex-direction-column is-justify-content-center">
+      <div className="column is-3 is-flex is-flex-direction-column is-justify-content-center mx-5">
         <Form submitHandler={submitHandler} resetStates={resetStates} />
         <div className="px-5 is-flex is-justify-content-space-between">
           <div className="field is-grouped">
@@ -62,11 +58,15 @@ function App() {
             <NavButton icon="fa-play" style="is-light" disabled={!isComputed} />
             <NavButton icon="fa-arrow-right" style="is-light" onClick={() => setCounter(counter + 1)} disabled={!isComputed || counter == steps.length - 1} id="next-btn" />
           </div>
-          <p className={isComputed? '' : 'has-text-grey'}>Step {counter} of {steps.length - 1}</p>
+          <p className={isComputed ? '' : 'has-text-grey'}>Step {counter} of {steps.length - 1}</p>
           <NavButton icon="fa-download" style="is-link" onClick={() => downloadComputation(operands, mode, steps)} disabled={!isComputed} />
         </div>
       </div>
-      <div className="column is-1"></div>
+      <div className="column is-flex is-align-content-center is-justify-content-center is-align-items-center">
+        <div className="table-container">
+          <Table steps={steps} counter={counter} />
+        </div>
+      </div>
     </div>
   );
 }

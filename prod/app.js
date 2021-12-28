@@ -85,12 +85,7 @@ function App() {
     { className: "columns", style: { 'minHeight': '100vh' } },
     React.createElement(
       "div",
-      { className: "column is-flex is-align-content-center is-justify-content-center is-align-items-center" },
-      React.createElement(Display, { step: steps[counter] })
-    ),
-    React.createElement(
-      "div",
-      { className: "column is-3 is-flex is-flex-direction-column is-justify-content-center" },
+      { className: "column is-3 is-flex is-flex-direction-column is-justify-content-center mx-5" },
       React.createElement(Form, { submitHandler: submitHandler, resetStates: resetStates }),
       React.createElement(
         "div",
@@ -119,7 +114,15 @@ function App() {
           }, disabled: !isComputed })
       )
     ),
-    React.createElement("div", { className: "column is-1" })
+    React.createElement(
+      "div",
+      { className: "column is-flex is-align-content-center is-justify-content-center is-align-items-center" },
+      React.createElement(
+        "div",
+        { className: "table-container" },
+        React.createElement(Table, { steps: steps, counter: counter })
+      )
+    )
   );
 }
 

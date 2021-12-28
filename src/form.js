@@ -81,7 +81,7 @@ function Form({ submitHandler, resetStates }) {
           <input type="submit" className="button is-primary" value="Compute" />
         </p>
         <p className="control">
-          <input type="reset" className="button is-light" onClick={() => setErrors({})}/>
+          <input type="reset" className="button is-light" onClick={() => { setErrors({}); resetStates(); }}/>
         </p>
       </div>
     </form>

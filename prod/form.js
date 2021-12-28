@@ -130,7 +130,7 @@ function Form(_ref2) {
         'p',
         { className: 'control' },
         React.createElement('input', { type: 'reset', className: 'button is-light', onClick: function onClick() {
-            return setErrors({});
+            setErrors({});resetStates();
           } })
       )
     )
