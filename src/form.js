@@ -13,9 +13,7 @@ function getErrorMessage(string, mode) {
     } else if (string.length > 16) {
       return 'Number exceeds 16 bits!';
     }
-  }
-
-  if (n < -2147483648 || n > 2147483647) {
+  } else if (n < -2147483648 || n > 2147483647) {
     return 'Number exceeds 16 bits!';
   }
 

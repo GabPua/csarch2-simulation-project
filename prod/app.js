@@ -8,14 +8,15 @@ function NavButton(_ref) {
   var icon = _ref.icon,
       style = _ref.style,
       onClick = _ref.onClick,
-      disabled = _ref.disabled;
+      disabled = _ref.disabled,
+      id = _ref.id;
 
   return React.createElement(
     "p",
     { className: "control" },
     React.createElement(
       "button",
-      { type: "button", className: "button " + style, onClick: onClick, disabled: disabled },
+      { type: "button", className: "button " + style, onClick: onClick, disabled: disabled, id: id },
       React.createElement(
         "span",
         { className: "icon is-medium" },
@@ -59,6 +60,20 @@ function App() {
     setCounter(0);
   };
 
+  React.useEffect(function () {
+    var next = document.getElementById('next-btn');
+    var prev = document.getElementById('prev-btn');
+
+    function onArrowPress(e) {
+      if (e.key === 'ArrowLeft') prev.click();else if (e.key === 'ArrowRight') next.click();
+    }
+
+    document.addEventListener('keydown', onArrowPress);
+    return function () {
+      return document.removeEventListener('keydown', onArrowPress);
+    };
+  }, []);
+
   return React.createElement(
     "div",
     { className: "columns", style: { 'minHeight': '100vh' } },
@@ -79,11 +94,11 @@ function App() {
           { className: "field is-grouped" },
           React.createElement(NavButton, { icon: "fa-arrow-left", style: "is-light", onClick: function onClick() {
               return setCounter(counter - 1);
-            }, disabled: !isComputed || counter == 0 }),
+            }, disabled: !isComputed || counter == 0, id: "prev-btn" }),
           React.createElement(NavButton, { icon: "fa-play", style: "is-light", disabled: !isComputed }),
           React.createElement(NavButton, { icon: "fa-arrow-right", style: "is-light", onClick: function onClick() {
               return setCounter(counter + 1);
-            }, disabled: !isComputed || counter == steps.length - 1 })
+            }, disabled: !isComputed || counter == steps.length - 1, id: "next-btn" })
         ),
         React.createElement(
           "p",

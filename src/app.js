@@ -2,10 +2,10 @@
 /*global ReactDOM */
 /*global downloadComputation */
 // eslint-disable-next-line no-unused-vars
-function NavButton({ icon, style, onClick, disabled }) {
+function NavButton({ icon, style, onClick, disabled, id }) {
   return (
     <p className="control">
-      <button type="button" className={`button ${style}`} onClick={onClick} disabled={disabled}>
+      <button type="button" className={`button ${style}`} onClick={onClick} disabled={disabled} id={id}>
         <span className="icon is-medium">
           <i className={`fa-solid fa-lg ${icon}`} />
         </span>
@@ -32,6 +32,19 @@ function App() {
     setIsComputed(false);
     setCounter(0);
   };
+  
+  React.useEffect(() => {
+    const next = document.getElementById('next-btn');
+    const prev = document.getElementById('prev-btn');
+
+    function onArrowPress(e) {
+      if (e.key === 'ArrowLeft') prev.click();
+      else if (e.key === 'ArrowRight')  next.click();
+    }
+
+    document.addEventListener('keydown', onArrowPress);
+    return () => document.removeEventListener('keydown', onArrowPress);
+  }, []);
 
   return (
     <div className="columns" style={{ 'minHeight': '100vh' }}>
@@ -43,9 +56,9 @@ function App() {
         <Form submitHandler={submitHandler} resetStates={resetStates} />
         <div className="px-5 is-flex is-justify-content-space-between">
           <div className="field is-grouped">
-            <NavButton icon="fa-arrow-left" style="is-light" onClick={() => setCounter(counter - 1)} disabled={!isComputed || counter == 0} />
+            <NavButton icon="fa-arrow-left" style="is-light" onClick={() => setCounter(counter - 1)} disabled={!isComputed || counter == 0} id="prev-btn" />
             <NavButton icon="fa-play" style="is-light" disabled={!isComputed} />
-            <NavButton icon="fa-arrow-right" style="is-light" onClick={() => setCounter(counter + 1)} disabled={!isComputed || counter == steps.length - 1} />
+            <NavButton icon="fa-arrow-right" style="is-light" onClick={() => setCounter(counter + 1)} disabled={!isComputed || counter == steps.length - 1} id="next-btn" />
           </div>
           <p className={isComputed? '' : 'has-text-grey'}>Step {counter} of {steps.length - 1}</p>
           <NavButton icon="fa-download" style="is-link" onClick={() => downloadComputation(operands, steps)} disabled={!isComputed} />
