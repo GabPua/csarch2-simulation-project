@@ -54,10 +54,9 @@ function multiply(op1, op2, mode) {
     op2 = getBinary(Number(op2));
   }
 
-  const bin1 = op1, bin2 = op2;
-  const n = Math.max(bin1.length, bin2.length);
-  bin1.padStart(n, bin1[0]);
-  bin2.padStart(n, bin2[0]);
+  const n = Math.max(op1.length, op2.length);
+  const bin1 = op1.padStart(n, op1[0]);
+  const bin2 = op2.padStart(n, op2[0]);
 
   // initialize variables
   const m = bin1;
