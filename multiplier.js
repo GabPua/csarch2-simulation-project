@@ -88,11 +88,63 @@ function multiply(op1, op2, mode) {
 }
 
 // utils
-function downloadComputation(operands, steps) {
-  for (let i = 0; i < steps.length; i++) {
+function evaluate(binString) {
+  const neg = binString[0] === '1';
+  if (neg) {
+    binString = negate(binString);
+  }
+
+  let ans = 0;
+  for (let i = 0; i < binString.length; i++) {
+    ans = ans * 2 + Number(binString[i]);
+  }
+  if (neg) {
+    ans = -ans;
+  }
+
+  return ans;
+}
+
+function downloadComputation(operands, mode, steps) {
+  const n = steps.length - 1;
+
+  // combine steps into one string
+  for (let i = 0; i < n + 1; i++) {
     steps[i] = steps[i].join(' ');
   }
-  steps.unshift(`Operand 1: ${operands[0]}`, `Operand 2: ${operands[1]}\n`);
+
+  // add label
+  for (let i = 0; i < n + 1; i++) {
+    let label;
+    if (i == 0) {
+      label = 'Initial:';
+    } else {
+      switch (i) {
+        case 1: label = '1st'; break;
+        case 2: label = '2nd'; break;
+        case 3: label = '3rd'; break;
+        default: label = i + 'th';
+      }
+      label += ' pass';
+    }
+    steps[i] = label.padEnd(11, ' ') + steps[i];
+  }
+
+  // add operands and headers
+  steps.unshift(`Operand 1: ${operands[0]}`,
+                `Operand 2: ${operands[1]}\n`,
+                ' '.repeat(11) + 'A' + ' '.repeat(n) + 'Q' + ' '.repeat(n) + 'Q0');
+  if (mode === 'binary') {
+    steps[0] += 'b';
+    steps[1] = steps[1].slice(0, steps[1].length - 1) + 'b\n';
+  }
+
+  const answer = steps[n + 3].slice(11, 11 + n) + steps[n + 3].slice(12 + n, 12 + 2 * n);
+  if (mode === 'binary') {
+    steps.push(`\nAnswer:    ${answer}b`);
+  } else {
+    steps.push(`\nAnswer:    ${evaluate(answer)}`);
+  }
 
   const text = steps.join('\n');
   

@@ -32,24 +32,30 @@ function App() {
       operands = _React$useState2[0],
       setOperands = _React$useState2[1];
 
-  var _React$useState3 = React.useState([['0', '0', '0']]),
+  var _React$useState3 = React.useState('Decimal'),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
-      steps = _React$useState4[0],
-      setSteps = _React$useState4[1];
+      mode = _React$useState4[0],
+      setMode = _React$useState4[1];
 
-  var _React$useState5 = React.useState(false),
+  var _React$useState5 = React.useState([['0', '0', '0']]),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
-      isComputed = _React$useState6[0],
-      setIsComputed = _React$useState6[1];
+      steps = _React$useState6[0],
+      setSteps = _React$useState6[1];
 
-  var _React$useState7 = React.useState(0),
+  var _React$useState7 = React.useState(false),
       _React$useState8 = _slicedToArray(_React$useState7, 2),
-      counter = _React$useState8[0],
-      setCounter = _React$useState8[1];
+      isComputed = _React$useState8[0],
+      setIsComputed = _React$useState8[1];
+
+  var _React$useState9 = React.useState(0),
+      _React$useState10 = _slicedToArray(_React$useState9, 2),
+      counter = _React$useState10[0],
+      setCounter = _React$useState10[1];
 
   var submitHandler = function submitHandler(op1, op2, mode) {
     setSteps(multiply(op1, op2, mode));
     setOperands([op1, op2]);
+    setMode(mode);
     setIsComputed(true);
     setCounter(0);
   };
@@ -109,7 +115,7 @@ function App() {
           steps.length - 1
         ),
         React.createElement(NavButton, { icon: "fa-download", style: "is-link", onClick: function onClick() {
-            return downloadComputation(operands, steps);
+            return downloadComputation(operands, mode, steps);
           }, disabled: !isComputed })
       )
     ),
