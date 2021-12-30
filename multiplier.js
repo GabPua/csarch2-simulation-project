@@ -125,7 +125,7 @@ function downloadComputation(operands, mode, steps) {
         case 3: label = '3rd'; break;
         default: label = i + 'th';
       }
-      label += ' pass';
+      label += ' pass:';
     }
     steps[i] = label.padEnd(11, ' ') + steps[i];
   }
