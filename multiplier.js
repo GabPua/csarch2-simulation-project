@@ -46,6 +46,23 @@ function add(op1, op2) {
   return result;
 }
 
+function evaluate(binString) {
+  const neg = binString[0] === '1';
+  if (neg) {
+    binString = negate(binString);
+  }
+
+  let ans = 0;
+  for (let i = 0; i < binString.length; i++) {
+    ans = ans * 2 + Number(binString[i]);
+  }
+  if (neg) {
+    ans = -ans;
+  }
+
+  return ans;
+}
+
 // eslint-disable-next-line no-unused-vars
 function multiply(op1, op2, mode) {
   // get binary representation if decimal
@@ -64,7 +81,7 @@ function multiply(op1, op2, mode) {
   let a = '0'.repeat(n);
   let q = bin2;
   let q0 = '0';
-  const result = [[a, q, q0]];
+  const steps = [[a, q, q0]];
 
   // perform multiplication algorithm
   for (let i = 0; i < n; i++) {
@@ -81,37 +98,27 @@ function multiply(op1, op2, mode) {
     a = a[0] + a.slice(0, n - 1);
 
     // add to result array
-    result.push([a, q, q0]);
+    steps.push([a, q, q0]);
   }
 
+  // evaluate answer
+  let answer = steps[n][0] + steps[n][1];
+  if (mode === 'decimal') {
+    answer = evaluate(answer);
+  }
+
+  const result = { steps, answer };
   return result;
 }
 
 // utils
-function evaluate(binString) {
-  const neg = binString[0] === '1';
-  if (neg) {
-    binString = negate(binString);
-  }
-
-  let ans = 0;
-  for (let i = 0; i < binString.length; i++) {
-    ans = ans * 2 + Number(binString[i]);
-  }
-  if (neg) {
-    ans = -ans;
-  }
-
-  return ans;
-}
-
-function downloadComputation(operands, mode, steps) {
+function downloadComputation(operands, mode, result) {
   const newSteps = [];
-  const n = steps.length - 1;
+  const n = result.steps.length - 1;
 
   // combine steps into one string
   for (let i = 0; i < n + 1; i++) {
-    newSteps.push(steps[i].join(' '));
+    newSteps.push(result.steps[i].join(' '));
   }
 
   // add label
@@ -140,11 +147,10 @@ function downloadComputation(operands, mode, steps) {
     newSteps[1] = newSteps[1].slice(0, newSteps[1].length - 1) + 'b\n';
   }
 
-  const answer = newSteps[n + 3].slice(11, 11 + n) + newSteps[n + 3].slice(12 + n, 12 + 2 * n);
   if (mode === 'binary') {
-    newSteps.push(`\nAnswer:    ${answer}b`);
+    newSteps.push(`\nAnswer:    ${result.answer}b`);
   } else {
-    newSteps.push(`\nAnswer:    ${evaluate(answer)}`);
+    newSteps.push(`\nAnswer:    ${result.answer}`);
   }
 
   const text = newSteps.join('\n');
