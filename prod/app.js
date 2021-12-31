@@ -52,6 +52,11 @@ function App() {
       counter = _React$useState10[0],
       setCounter = _React$useState10[1];
 
+  var _React$useState11 = React.useState(null),
+      _React$useState12 = _slicedToArray(_React$useState11, 2),
+      isPlaying = _React$useState12[0],
+      setIsPlaying = _React$useState12[1];
+
   var submitHandler = function submitHandler(op1, op2, mode) {
     setSteps(multiply(op1, op2, mode));
     setOperands([op1, op2]);
@@ -64,6 +69,26 @@ function App() {
     setSteps([['0', '0', '0']]);
     setIsComputed(false);
     setCounter(0);
+  };
+
+  var incrementCounter = function incrementCounter() {
+    if (counter < steps.length - 1) setCounter(function (count) {
+      return count + 1;
+    });
+  };
+  var decrementCounter = function decrementCounter() {
+    if (counter > 0) setCounter(function (count) {
+      return count - 1;
+    });
+  };
+
+  var handlePlayClick = function handlePlayClick() {
+    if (isPlaying) {
+      clearInterval(isPlaying);
+      setIsPlaying(null);
+    } else {
+      setIsPlaying(setInterval(incrementCounter, 500));
+    }
   };
 
   React.useEffect(function () {
@@ -80,12 +105,19 @@ function App() {
     };
   }, []);
 
+  React.useEffect(function () {
+    if (isPlaying && counter == steps.length - 1) {
+      clearInterval(isPlaying);
+      setIsPlaying(null);
+    }
+  }, [counter]);
+
   return React.createElement(
     "div",
-    { className: "columns", style: { 'minHeight': '100vh' } },
+    { className: "columns is-multiline", style: { 'minHeight': '100vh' } },
     React.createElement(
       "div",
-      { className: "column is-3 is-flex is-flex-direction-column is-justify-content-center mx-5" },
+      { className: "column is-one-quarter-fullhd is-full is-flex is-flex-direction-column is-justify-content-center px-5" },
       React.createElement(Form, { submitHandler: submitHandler, resetStates: resetStates }),
       React.createElement(
         "div",
@@ -93,13 +125,9 @@ function App() {
         React.createElement(
           "div",
           { className: "field is-grouped" },
-          React.createElement(NavButton, { icon: "fa-arrow-left", style: "is-light", onClick: function onClick() {
-              return setCounter(counter - 1);
-            }, disabled: !isComputed || counter == 0, id: "prev-btn" }),
-          React.createElement(NavButton, { icon: "fa-play", style: "is-light", disabled: !isComputed }),
-          React.createElement(NavButton, { icon: "fa-arrow-right", style: "is-light", onClick: function onClick() {
-              return setCounter(counter + 1);
-            }, disabled: !isComputed || counter == steps.length - 1, id: "next-btn" })
+          React.createElement(NavButton, { icon: "fa-arrow-left", style: "is-light", onClick: decrementCounter, disabled: !isComputed || counter == 0, id: "prev-btn" }),
+          React.createElement(NavButton, { icon: "fa-play", style: isPlaying ? 'is-primary' : 'is-light', disabled: !isComputed || counter == steps.length - 1, onClick: handlePlayClick }),
+          React.createElement(NavButton, { icon: "fa-arrow-right", style: "is-light", onClick: incrementCounter, disabled: !isComputed || counter == steps.length - 1, id: "next-btn" })
         ),
         React.createElement(
           "p",
