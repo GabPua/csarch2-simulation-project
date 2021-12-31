@@ -106,11 +106,12 @@ function evaluate(binString) {
 }
 
 function downloadComputation(operands, mode, steps) {
+  const newSteps = [];
   const n = steps.length - 1;
 
   // combine steps into one string
   for (let i = 0; i < n + 1; i++) {
-    steps[i] = steps[i].join(' ');
+    newSteps.push(steps[i].join(' '));
   }
 
   // add label
@@ -127,27 +128,27 @@ function downloadComputation(operands, mode, steps) {
       }
       label += ' pass:';
     }
-    steps[i] = label.padEnd(11, ' ') + steps[i];
+    newSteps[i] = (label.padEnd(11, ' ') + newSteps[i]);
   }
 
   // add operands and headers
-  steps.unshift(`Operand 1: ${operands[0]}`,
-                `Operand 2: ${operands[1]}\n`,
-                ' '.repeat(11) + 'A' + ' '.repeat(n) + 'Q' + ' '.repeat(n) + 'Q0');
+  newSteps.unshift(`Operand 1: ${operands[0]}`,
+    `Operand 2: ${operands[1]}\n`,
+    ' '.repeat(11) + 'A' + ' '.repeat(n) + 'Q' + ' '.repeat(n) + 'Q0');
   if (mode === 'binary') {
-    steps[0] += 'b';
-    steps[1] = steps[1].slice(0, steps[1].length - 1) + 'b\n';
+    newSteps[0] += 'b';
+    newSteps[1] = newSteps[1].slice(0, newSteps[1].length - 1) + 'b\n';
   }
 
-  const answer = steps[n + 3].slice(11, 11 + n) + steps[n + 3].slice(12 + n, 12 + 2 * n);
+  const answer = newSteps[n + 3].slice(11, 11 + n) + newSteps[n + 3].slice(12 + n, 12 + 2 * n);
   if (mode === 'binary') {
-    steps.push(`\nAnswer:    ${answer}b`);
+    newSteps.push(`\nAnswer:    ${answer}b`);
   } else {
-    steps.push(`\nAnswer:    ${evaluate(answer)}`);
+    newSteps.push(`\nAnswer:    ${evaluate(answer)}`);
   }
 
-  const text = steps.join('\n');
-  
+  const text = newSteps.join('\n');
+
   const element = document.createElement('a');
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
   element.setAttribute('download', 'Computation.txt');
