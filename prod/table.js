@@ -20,7 +20,8 @@ function Row(_ref) {
 
 function Table(_ref2) {
   var steps = _ref2.steps,
-      counter = _ref2.counter;
+      counter = _ref2.counter,
+      answer = _ref2.answer;
 
   var rows = [];
   for (var i = 0; i < steps.length; i++) {
@@ -65,6 +66,16 @@ function Table(_ref2) {
       'tbody',
       null,
       rows
+    ),
+    React.createElement(
+      'caption',
+      null,
+      answer === null ? '' : React.createElement(
+        'strong',
+        null,
+        'Answer: ',
+        answer
+      )
     )
   );
 }

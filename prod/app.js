@@ -42,10 +42,10 @@ function App() {
       steps = _React$useState6[0],
       setSteps = _React$useState6[1];
 
-  var _React$useState7 = React.useState(false),
+  var _React$useState7 = React.useState(null),
       _React$useState8 = _slicedToArray(_React$useState7, 2),
-      isComputed = _React$useState8[0],
-      setIsComputed = _React$useState8[1];
+      answer = _React$useState8[0],
+      setAnswer = _React$useState8[1];
 
   var _React$useState9 = React.useState(0),
       _React$useState10 = _slicedToArray(_React$useState9, 2),
@@ -58,16 +58,20 @@ function App() {
       setIsPlaying = _React$useState12[1];
 
   var submitHandler = function submitHandler(op1, op2, mode) {
-    setSteps(multiply(op1, op2, mode));
+    var _multiply = multiply(op1, op2, mode),
+        steps = _multiply.steps,
+        answer = _multiply.answer;
+
+    setSteps(steps);
+    setAnswer(answer);
     setOperands([op1, op2]);
     setMode(mode);
-    setIsComputed(true);
     setCounter(0);
   };
 
   var resetStates = function resetStates() {
     setSteps([['0', '0', '0']]);
-    setIsComputed(false);
+    setAnswer(null);
     setCounter(0);
   };
 
@@ -125,21 +129,21 @@ function App() {
         React.createElement(
           "div",
           { className: "field is-grouped" },
-          React.createElement(NavButton, { icon: "fa-arrow-left", style: "is-light", onClick: decrementCounter, disabled: !isComputed || counter == 0, id: "prev-btn" }),
-          React.createElement(NavButton, { icon: "fa-play", style: isPlaying ? 'is-primary' : 'is-light', disabled: !isComputed || counter == steps.length - 1, onClick: handlePlayClick }),
-          React.createElement(NavButton, { icon: "fa-arrow-right", style: "is-light", onClick: incrementCounter, disabled: !isComputed || counter == steps.length - 1, id: "next-btn" })
+          React.createElement(NavButton, { icon: "fa-arrow-left", style: "is-light", onClick: decrementCounter, disabled: isPlaying || answer === null || counter == 0, id: "prev-btn" }),
+          React.createElement(NavButton, { icon: "fa-play", style: isPlaying ? 'is-primary' : 'is-light', disabled: answer === null || counter == steps.length - 1, onClick: handlePlayClick }),
+          React.createElement(NavButton, { icon: "fa-arrow-right", style: "is-light", onClick: incrementCounter, disabled: isPlaying || answer === null || counter == steps.length - 1, id: "next-btn" })
         ),
         React.createElement(
           "p",
-          { className: isComputed ? '' : 'has-text-grey' },
+          { className: answer !== null ? '' : 'has-text-grey' },
           "Step ",
           counter,
           " of ",
           steps.length - 1
         ),
         React.createElement(NavButton, { icon: "fa-download", style: "is-link", onClick: function onClick() {
-            return downloadComputation(operands, mode, steps);
-          }, disabled: !isComputed })
+            return downloadComputation(operands, mode, { steps: steps, answer: answer });
+          }, disabled: answer === null })
       )
     ),
     React.createElement(
@@ -148,7 +152,7 @@ function App() {
       React.createElement(
         "div",
         { className: "table-container" },
-        React.createElement(Table, { steps: steps, counter: counter })
+        React.createElement(Table, { steps: steps, counter: counter, answer: answer })
       )
     )
   );

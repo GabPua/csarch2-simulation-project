@@ -9,18 +9,18 @@ function Row({ data, className }) {
   );
 }
 
-function Table({ steps, counter }) {
+function Table({ steps, counter, answer }) {
   const rows = [];
   for (let i = 0; i < steps.length; i++) {
     let className = '';
-    
+
     if (i > counter) {
       className = 'is-invisible';
     } else if (i == counter) {
       className = 'is-selected';
     }
 
-    rows.push(<Row key={i} data={steps[i].join('')} className={className}/>);
+    rows.push(<Row key={i} data={steps[i].join('')} className={className} />);
   }
 
   return (
@@ -35,6 +35,7 @@ function Table({ steps, counter }) {
       <tbody>
         {rows}
       </tbody>
+      <caption>{answer === null ? '' : <strong>Answer: {answer}</strong>}</caption>
     </table>
   );
 }

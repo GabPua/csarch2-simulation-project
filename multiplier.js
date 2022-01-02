@@ -107,8 +107,10 @@ function multiply(op1, op2, mode) {
     answer = evaluate(answer);
   }
 
-  const result = { steps, answer };
-  return result;
+  return {
+    steps,
+    answer
+  };
 }
 
 // utils
