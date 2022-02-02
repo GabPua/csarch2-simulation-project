@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 function trimBinary(string) {
   let index = 0;
-  while (index < string.length - 1 && string[index] === string[0]) {
+  while (index + 1 < string.length && string[index + 1] === string[0]) {
     index++;
   }
   string = string.slice(index);
@@ -60,9 +60,13 @@ function Form({ submitHandler, resetStates }) {
     temp.op2 = getErrorMessage(op2, mode);
 
     if (temp.op1 === '' && temp.op1 === temp.op2) {
-      const bin1 = trimBinary(op1);
-      const bin2 = trimBinary(op2);
-      submitHandler(bin1, bin2, mode);
+      if (mode === 'decimal') {
+        submitHandler(op1, op2, mode);
+      } else {
+        const bin1 = trimBinary(op1);
+        const bin2 = trimBinary(op2);
+        submitHandler(bin1, bin2, mode);
+      }
     }
 
     setErrors(temp);

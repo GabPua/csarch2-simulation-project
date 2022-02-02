@@ -4,7 +4,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 // eslint-disable-next-line no-unused-vars
 function trimBinary(string) {
   var index = 0;
-  while (index < string.length - 1 && string[index] === string[0]) {
+  while (index + 1 < string.length && string[index + 1] === string[0]) {
     index++;
   }
   string = string.slice(index);
@@ -91,9 +91,13 @@ function Form(_ref2) {
     temp.op2 = getErrorMessage(op2, mode);
 
     if (temp.op1 === '' && temp.op1 === temp.op2) {
-      var bin1 = trimBinary(op1);
-      var bin2 = trimBinary(op2);
-      submitHandler(bin1, bin2, mode);
+      if (mode === 'decimal') {
+        submitHandler(op1, op2, mode);
+      } else {
+        var bin1 = trimBinary(op1);
+        var bin2 = trimBinary(op2);
+        submitHandler(bin1, bin2, mode);
+      }
     }
 
     setErrors(temp);
