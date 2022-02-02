@@ -1,5 +1,19 @@
 /*global React */
 // eslint-disable-next-line no-unused-vars
+function trimBinary(string) {
+  let index = 0;
+  while (index < string.length - 1 && string[index] === string[0]) {
+    index++;
+  }
+  string = string.slice(index);
+
+  if (string === '1') {
+    string = '11';
+  }
+
+  return string;
+}
+
 function getErrorMessage(string, mode) {
   const n = Number(string);
 
@@ -10,7 +24,10 @@ function getErrorMessage(string, mode) {
   if (mode == 'binary') {
     if (!/^[01]+$/.test(string)) {
       return 'Value is not a valid binary number!';
-    } else if (string.length > 16) {
+    } 
+    
+    string = trimBinary(string);
+    if (string.length > 16) {
       return 'Number exceeds 16 bits!';
     }
   } else if (n < -2147483648 || n > 2147483647) {
@@ -43,7 +60,9 @@ function Form({ submitHandler, resetStates }) {
     temp.op2 = getErrorMessage(op2, mode);
 
     if (temp.op1 === '' && temp.op1 === temp.op2) {
-      submitHandler(op1, op2, mode);
+      const bin1 = trimBinary(op1);
+      const bin2 = trimBinary(op2);
+      submitHandler(bin1, bin2, mode);
     }
 
     setErrors(temp);
