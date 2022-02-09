@@ -21,11 +21,15 @@ function App() {
   const [answer, setAnswer] = React.useState(null);
   const [counter, setCounter] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(null);
+  const [m, setM] = React.useState('0');
+  const [negM, setNegM] = React.useState('0');
 
   const submitHandler = (op1, op2, mode) => {
-    const { steps, answer } = multiply(op1, op2, mode);
+    const { steps, answer, m, m_neg } = multiply(op1, op2, mode);
     setSteps(steps);
     setAnswer(answer);
+    setM(m);
+    setNegM(m_neg);
     setOperands([op1, op2]);
     setMode(mode);
     setCounter(0);
@@ -76,14 +80,28 @@ function App() {
         <div className="px-5 is-flex is-justify-content-space-between">
           <div className="field is-grouped">
             <NavButton icon="fa-arrow-left" style="is-light" onClick={decrementCounter} disabled={isPlaying || answer === null || counter == 0} id="prev-btn" />
-            <NavButton icon="fa-play" style={isPlaying ? 'is-primary' : 'is-light' } disabled={answer === null || counter == steps.length - 1} onClick={handlePlayClick} />
+            <NavButton icon="fa-play" style={isPlaying ? 'is-primary' : 'is-light'} disabled={answer === null || counter == steps.length - 1} onClick={handlePlayClick} />
             <NavButton icon="fa-arrow-right" style="is-light" onClick={incrementCounter} disabled={isPlaying || answer === null || counter == steps.length - 1} id="next-btn" />
           </div>
           <p className={answer !== null ? '' : 'has-text-grey'}>Step {counter} of {steps.length - 1}</p>
           <NavButton icon="fa-download" style="is-link" onClick={() => downloadComputation(operands, mode, { steps, answer })} disabled={answer === null} />
         </div>
       </div>
-      <div className="column is-flex is-align-content-center is-justify-content-center is-align-items-center">
+      <div className="column is-flex is-flex-direction-column is-align-content-center is-justify-content-center is-align-items-center">
+        <div className="table-container">
+          <table className="table is-bordered">
+            <tbody>
+              <tr>
+                <td className="has-text-weight-bold">+M</td>
+                <td>{m}</td>
+              </tr>
+              <tr>
+                <td className="has-text-weight-bold">-M</td>
+                <td>{negM}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div className="table-container">
           <Table steps={steps} counter={counter} answer={answer} />
         </div>

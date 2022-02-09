@@ -57,13 +57,27 @@ function App() {
       isPlaying = _React$useState12[0],
       setIsPlaying = _React$useState12[1];
 
+  var _React$useState13 = React.useState('0'),
+      _React$useState14 = _slicedToArray(_React$useState13, 2),
+      m = _React$useState14[0],
+      setM = _React$useState14[1];
+
+  var _React$useState15 = React.useState('0'),
+      _React$useState16 = _slicedToArray(_React$useState15, 2),
+      negM = _React$useState16[0],
+      setNegM = _React$useState16[1];
+
   var submitHandler = function submitHandler(op1, op2, mode) {
     var _multiply = multiply(op1, op2, mode),
         steps = _multiply.steps,
-        answer = _multiply.answer;
+        answer = _multiply.answer,
+        m = _multiply.m,
+        m_neg = _multiply.m_neg;
 
     setSteps(steps);
     setAnswer(answer);
+    setM(m);
+    setNegM(m_neg);
     setOperands([op1, op2]);
     setMode(mode);
     setCounter(0);
@@ -148,7 +162,47 @@ function App() {
     ),
     React.createElement(
       "div",
-      { className: "column is-flex is-align-content-center is-justify-content-center is-align-items-center" },
+      { className: "column is-flex is-flex-direction-column is-align-content-center is-justify-content-center is-align-items-center" },
+      React.createElement(
+        "div",
+        { className: "table-container" },
+        React.createElement(
+          "table",
+          { className: "table is-bordered" },
+          React.createElement(
+            "tbody",
+            null,
+            React.createElement(
+              "tr",
+              null,
+              React.createElement(
+                "td",
+                { className: "has-text-weight-bold" },
+                "+M"
+              ),
+              React.createElement(
+                "td",
+                null,
+                m
+              )
+            ),
+            React.createElement(
+              "tr",
+              null,
+              React.createElement(
+                "td",
+                { className: "has-text-weight-bold" },
+                "-M"
+              ),
+              React.createElement(
+                "td",
+                null,
+                negM
+              )
+            )
+          )
+        )
+      ),
       React.createElement(
         "div",
         { className: "table-container" },
