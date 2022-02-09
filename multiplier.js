@@ -108,6 +108,8 @@ function multiply(op1, op2, mode) {
   }
 
   return {
+    m,
+    m_neg,
     steps,
     answer
   };
@@ -143,6 +145,8 @@ function downloadComputation(operands, mode, result) {
   // add operands and headers
   newSteps.unshift(`Operand 1: ${operands[0]}`,
     `Operand 2: ${operands[1]}\n`,
+    `+M:        ${result.m}`,
+    `-M:        ${result.m_neg}\n`,
     ' '.repeat(11) + 'A' + ' '.repeat(n) + 'Q' + ' '.repeat(n) + 'Q0');
   if (mode === 'binary') {
     newSteps[0] += 'b';
