@@ -17,12 +17,12 @@ function NavButton({ icon, style, onClick, disabled, id }) {
 function App() {
   const [operands, setOperands] = React.useState([]);
   const [mode, setMode] = React.useState('Decimal');
-  const [steps, setSteps] = React.useState([['0', '0', '0']]);
+  const [steps, setSteps] = React.useState([[{ values: ['0', '0', '0'] }]]);
   const [answer, setAnswer] = React.useState(null);
   const [counter, setCounter] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(null);
   const [m, setM] = React.useState('0');
-  const [negM, setNegM] = React.useState('0');
+  const [m_neg, setNegM] = React.useState('0');
 
   const submitHandler = (op1, op2, mode) => {
     const { steps, answer, m, m_neg } = multiply(op1, op2, mode);
@@ -36,7 +36,7 @@ function App() {
   };
 
   const resetStates = () => {
-    setSteps([['0', '0', '0']]);
+    setSteps([[{ values: ['0', '0', '0'] }]]);
     setAnswer(null);
     setCounter(0);
   };
@@ -84,7 +84,7 @@ function App() {
             <NavButton icon="fa-arrow-right" style="is-light" onClick={incrementCounter} disabled={isPlaying || answer === null || counter == steps.length - 1} id="next-btn" />
           </div>
           <p className={answer !== null ? '' : 'has-text-grey'}>Step {counter} of {steps.length - 1}</p>
-          <NavButton icon="fa-download" style="is-link" onClick={() => downloadComputation(operands, mode, { steps, answer })} disabled={answer === null} />
+          <NavButton icon="fa-download" style="is-link" onClick={() => downloadComputation(operands, mode, { m, m_neg, steps, answer })} disabled={answer === null} />
         </div>
       </div>
       <div className="column is-flex is-flex-direction-column is-align-content-center is-justify-content-center is-align-items-center">
@@ -97,7 +97,7 @@ function App() {
               </tr>
               <tr>
                 <td className="has-text-weight-bold">-M</td>
-                <td>{negM}</td>
+                <td>{m_neg}</td>
               </tr>
             </tbody>
           </table>

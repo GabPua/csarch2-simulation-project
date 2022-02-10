@@ -11,7 +11,8 @@ function Row({ data, className }) {
 
 function Table({ steps, counter, answer }) {
   const rows = [];
-  for (let i = 0; i < steps.length; i++) {
+  const n = steps.length - 1;
+  for (let i = 0; i < n + 1; i++) {
     let className = '';
 
     if (i > counter) {
@@ -20,15 +21,15 @@ function Table({ steps, counter, answer }) {
       className = 'is-selected';
     }
 
-    rows.push(<Row key={i} data={steps[i].join('')} className={className} />);
+    rows.push(<Row key={i} data={steps[i][(i == 0 ? 0 : 1)].values.join('')} className={className} />);
   }
 
   return (
     <table className="table is-bordered">
       <thead>
         <tr>
-          <th colSpan={steps[0][0].length}>A</th>
-          <th colSpan={steps[0][1].length}>Q</th>
+          <th colSpan={n}>A</th>
+          <th colSpan={n}>Q</th>
           <th>Q0</th>
         </tr>
       </thead>

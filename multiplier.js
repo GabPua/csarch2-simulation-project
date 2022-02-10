@@ -81,28 +81,35 @@ function multiply(op1, op2, mode) {
   let a = '0'.repeat(n);
   let q = bin2;
   let q0 = '0';
-  const steps = [[a, q, q0]];
+  const steps = [[{ substep: "Initial:", values: [a, q, q0] }]];
 
   // perform multiplication algorithm
   for (let i = 0; i < n; i++) {
+    let pass = [];
+
     // check whether to add
     if (q[n - 1] === '0' && q0 === '1') {
       a = add(a, m);
+      pass.push({ substep: "Add +M:", values: [a, q, q0] });
     } else if (q[n - 1] === '1' && q0 === '0') {
       a = add(a, m_neg);
+      pass.push({ substep: "Add -M:", values: [a, q, q0] });
+    } else {
+      pass.push({ substep: "Add 0:", values: [a, q, q0] });
     }
 
     // shift
     q0 = q[n - 1];
     q = a[n - 1] + q.slice(0, n - 1);
     a = a[0] + a.slice(0, n - 1);
+    pass.push({ substep: "Shift:", values: [a, q, q0] });
 
     // add to result array
-    steps.push([a, q, q0]);
+    steps.push(pass);
   }
 
   // evaluate answer
-  let answer = steps[n][0] + steps[n][1];
+  let answer = steps[n][1].values[0] + steps[n][1].values[1];
   if (mode === 'decimal') {
     answer = evaluate(answer);
   }
@@ -122,24 +129,34 @@ function downloadComputation(operands, mode, result) {
 
   // combine steps into one string
   for (let i = 0; i < n + 1; i++) {
-    newSteps.push(result.steps[i].join(' '));
+    for (let j = 0; j < 2; j++) {
+      if (i == 0 && j == 1) {
+        continue;
+      }
+
+      const { substep, values } = result.steps[i][j];
+      let output = substep.padEnd(11, ' ') + values.join(' ');
+
+      if (i == 0 || (i != n && j == 1)) {
+        output += '\n';
+      }
+
+      newSteps.push(output);
+    }
   }
 
   // add label
-  for (let i = 0; i < n + 1; i++) {
+  for (let i = 1; i < n + 1; i++) {
     let label;
-    if (i == 0) {
-      label = 'Initial:';
-    } else {
-      switch (i) {
-        case 1: label = '1st'; break;
-        case 2: label = '2nd'; break;
-        case 3: label = '3rd'; break;
-        default: label = i + 'th';
-      }
-      label += ' pass:';
+    switch (i) {
+      case 1: label = '1st'; break;
+      case 2: label = '2nd'; break;
+      case 3: label = '3rd'; break;
+      default: label = i + 'th';
     }
-    newSteps[i] = (label.padEnd(11, ' ') + newSteps[i]);
+    label += ' pass:\n';
+
+    newSteps[2 * i - 1] = label + newSteps[2 * i - 1];
   }
 
   // add operands and headers

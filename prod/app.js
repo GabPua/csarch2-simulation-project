@@ -37,7 +37,7 @@ function App() {
       mode = _React$useState4[0],
       setMode = _React$useState4[1];
 
-  var _React$useState5 = React.useState([['0', '0', '0']]),
+  var _React$useState5 = React.useState([[{ values: ['0', '0', '0'] }]]),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
       steps = _React$useState6[0],
       setSteps = _React$useState6[1];
@@ -64,7 +64,7 @@ function App() {
 
   var _React$useState15 = React.useState('0'),
       _React$useState16 = _slicedToArray(_React$useState15, 2),
-      negM = _React$useState16[0],
+      m_neg = _React$useState16[0],
       setNegM = _React$useState16[1];
 
   var submitHandler = function submitHandler(op1, op2, mode) {
@@ -84,7 +84,7 @@ function App() {
   };
 
   var resetStates = function resetStates() {
-    setSteps([['0', '0', '0']]);
+    setSteps([[{ values: ['0', '0', '0'] }]]);
     setAnswer(null);
     setCounter(0);
   };
@@ -156,7 +156,7 @@ function App() {
           steps.length - 1
         ),
         React.createElement(NavButton, { icon: "fa-download", style: "is-link", onClick: function onClick() {
-            return downloadComputation(operands, mode, { steps: steps, answer: answer });
+            return downloadComputation(operands, mode, { m: m, m_neg: m_neg, steps: steps, answer: answer });
           }, disabled: answer === null })
       )
     ),
@@ -197,7 +197,7 @@ function App() {
               React.createElement(
                 "td",
                 null,
-                negM
+                m_neg
               )
             )
           )

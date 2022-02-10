@@ -24,7 +24,8 @@ function Table(_ref2) {
       answer = _ref2.answer;
 
   var rows = [];
-  for (var i = 0; i < steps.length; i++) {
+  var n = steps.length - 1;
+  for (var i = 0; i < n + 1; i++) {
     var className = '';
 
     if (i > counter) {
@@ -33,7 +34,7 @@ function Table(_ref2) {
       className = 'is-selected';
     }
 
-    rows.push(React.createElement(Row, { key: i, data: steps[i].join(''), className: className }));
+    rows.push(React.createElement(Row, { key: i, data: steps[i][i == 0 ? 0 : 1].values.join(''), className: className }));
   }
 
   return React.createElement(
@@ -47,12 +48,12 @@ function Table(_ref2) {
         null,
         React.createElement(
           'th',
-          { colSpan: steps[0][0].length },
+          { colSpan: n },
           'A'
         ),
         React.createElement(
           'th',
-          { colSpan: steps[0][1].length },
+          { colSpan: n },
           'Q'
         ),
         React.createElement(
