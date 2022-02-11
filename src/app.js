@@ -17,12 +17,15 @@ function NavButton({ icon, style, onClick, disabled, id }) {
 function App() {
   const [operands, setOperands] = React.useState([]);
   const [mode, setMode] = React.useState('Decimal');
-  const [steps, setSteps] = React.useState([[{ values: ['0', '0', '0'] }]]);
+  const [steps, setSteps] = React.useState([[{ substep: 'Initial: ', values: ['0', '0', '0'] }]]);
   const [answer, setAnswer] = React.useState(null);
   const [counter, setCounter] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(null);
   const [m, setM] = React.useState('0');
   const [m_neg, setNegM] = React.useState('0');
+  const [isInDepth, setIsInDepth] = React.useState(false);
+
+  const toggleDepth = () => setIsInDepth(!isInDepth);
 
   const submitHandler = (op1, op2, mode) => {
     const { steps, answer, m, m_neg } = multiply(op1, op2, mode);
@@ -36,7 +39,9 @@ function App() {
   };
 
   const resetStates = () => {
-    setSteps([[{ values: ['0', '0', '0'] }]]);
+    setSteps([[{ substep: 'Initial:', values: ['0', '0', '0'] }]]);
+    setM('0');
+    setNegM('0');
     setAnswer(null);
     setCounter(0);
   };
@@ -76,7 +81,7 @@ function App() {
   return (
     <div className="columns is-multiline" style={{ 'minHeight': '100vh' }}>
       <div className="column is-one-quarter-fullhd is-full is-flex is-flex-direction-column is-justify-content-center px-5">
-        <Form submitHandler={submitHandler} resetStates={resetStates} />
+        <Form submitHandler={submitHandler} resetStates={resetStates} isInDepth={isInDepth} toggleDepth={toggleDepth} />
         <div className="px-5 is-flex is-justify-content-space-between">
           <div className="field is-grouped">
             <NavButton icon="fa-arrow-left" style="is-light" onClick={decrementCounter} disabled={isPlaying || answer === null || counter == 0} id="prev-btn" />
@@ -102,9 +107,16 @@ function App() {
             </tbody>
           </table>
         </div>
-        <div className="table-container">
-          <Table steps={steps} counter={counter} answer={answer} />
-        </div>
+        {isInDepth ?
+          <div style={{maxHeight: '80vh', overflowY: 'scroll'}}>
+            <InDepthCluster steps={steps} counter={counter} />
+          </div>
+          :
+          <div className="table-container">
+            <Table steps={steps} counter={counter} />
+          </div>
+        }
+        <p>{answer === null ? '' : <strong>Answer: {answer}</strong>}</p>
       </div>
     </div>
   );

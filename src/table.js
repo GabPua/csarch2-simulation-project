@@ -9,7 +9,7 @@ function Row({ data, className }) {
   );
 }
 
-function Table({ steps, counter, answer }) {
+function Table({ steps, counter }) {
   const rows = [];
   const n = steps.length - 1;
   for (let i = 0; i < n + 1; i++) {
@@ -36,7 +36,6 @@ function Table({ steps, counter, answer }) {
       <tbody>
         {rows}
       </tbody>
-      <caption>{answer === null ? '' : <strong>Answer: {answer}</strong>}</caption>
     </table>
   );
 }

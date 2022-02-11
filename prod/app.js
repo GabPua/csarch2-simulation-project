@@ -37,7 +37,7 @@ function App() {
       mode = _React$useState4[0],
       setMode = _React$useState4[1];
 
-  var _React$useState5 = React.useState([[{ values: ['0', '0', '0'] }]]),
+  var _React$useState5 = React.useState([[{ substep: 'Initial: ', values: ['0', '0', '0'] }]]),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
       steps = _React$useState6[0],
       setSteps = _React$useState6[1];
@@ -67,6 +67,15 @@ function App() {
       m_neg = _React$useState16[0],
       setNegM = _React$useState16[1];
 
+  var _React$useState17 = React.useState(false),
+      _React$useState18 = _slicedToArray(_React$useState17, 2),
+      isInDepth = _React$useState18[0],
+      setIsInDepth = _React$useState18[1];
+
+  var toggleDepth = function toggleDepth() {
+    return setIsInDepth(!isInDepth);
+  };
+
   var submitHandler = function submitHandler(op1, op2, mode) {
     var _multiply = multiply(op1, op2, mode),
         steps = _multiply.steps,
@@ -84,7 +93,9 @@ function App() {
   };
 
   var resetStates = function resetStates() {
-    setSteps([[{ values: ['0', '0', '0'] }]]);
+    setSteps([[{ substep: 'Initial:', values: ['0', '0', '0'] }]]);
+    setM('0');
+    setNegM('0');
     setAnswer(null);
     setCounter(0);
   };
@@ -136,7 +147,7 @@ function App() {
     React.createElement(
       "div",
       { className: "column is-one-quarter-fullhd is-full is-flex is-flex-direction-column is-justify-content-center px-5" },
-      React.createElement(Form, { submitHandler: submitHandler, resetStates: resetStates }),
+      React.createElement(Form, { submitHandler: submitHandler, resetStates: resetStates, isInDepth: isInDepth, toggleDepth: toggleDepth }),
       React.createElement(
         "div",
         { className: "px-5 is-flex is-justify-content-space-between" },
@@ -203,10 +214,24 @@ function App() {
           )
         )
       ),
-      React.createElement(
+      isInDepth ? React.createElement(
+        "div",
+        { style: { maxHeight: '80vh', overflowY: 'scroll' } },
+        React.createElement(InDepthCluster, { steps: steps, counter: counter })
+      ) : React.createElement(
         "div",
         { className: "table-container" },
-        React.createElement(Table, { steps: steps, counter: counter, answer: answer })
+        React.createElement(Table, { steps: steps, counter: counter })
+      ),
+      React.createElement(
+        "p",
+        null,
+        answer === null ? '' : React.createElement(
+          "strong",
+          null,
+          "Answer: ",
+          answer
+        )
       )
     )
   );

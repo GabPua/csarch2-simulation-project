@@ -70,7 +70,9 @@ function TextInput(_ref) {
 
 function Form(_ref2) {
   var submitHandler = _ref2.submitHandler,
-      resetStates = _ref2.resetStates;
+      resetStates = _ref2.resetStates,
+      isInDepth = _ref2.isInDepth,
+      toggleDepth = _ref2.toggleDepth;
 
   var _React$useState = React.useState({}),
       _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -111,6 +113,11 @@ function Form(_ref2) {
     resetStates();
   };
 
+  var handleDepthChange = function handleDepthChange(e) {
+    e.preventDefault();
+    toggleDepth();
+  };
+
   return React.createElement(
     'form',
     { className: 'box', onSubmit: handleSubmit },
@@ -143,7 +150,7 @@ function Form(_ref2) {
     ),
     React.createElement(
       'div',
-      { className: 'field is-grouped' },
+      { className: 'field is-grouped mt-4' },
       React.createElement(
         'p',
         { className: 'control' },
@@ -155,6 +162,15 @@ function Form(_ref2) {
         React.createElement('input', { type: 'reset', className: 'button is-light', onClick: function onClick() {
             setErrors({});resetStates();
           } })
+      ),
+      React.createElement(
+        'p',
+        { className: 'control' },
+        React.createElement(
+          'button',
+          { className: 'button' + (isInDepth ? ' is-info is-selected' : ''), onClick: handleDepthChange },
+          'In-Depth'
+        )
       )
     )
   );

@@ -49,7 +49,7 @@ function TextInput({ id, label, error, changeHandler }) {
   );
 }
 
-function Form({ submitHandler, resetStates }) {
+function Form({ submitHandler, resetStates, isInDepth, toggleDepth }) {
   const [errors, setErrors] = React.useState({});
   const handleSubmit = e => {
     e.preventDefault();
@@ -80,6 +80,11 @@ function Form({ submitHandler, resetStates }) {
     resetStates();
   };
 
+  const handleDepthChange = e => {
+    e.preventDefault();
+    toggleDepth();
+  };
+
   return (
     <form className="box" onSubmit={handleSubmit}>
       <TextInput id="op1" label="Operand 1:" error={errors.op1} changeHandler={handleChange} />
@@ -99,12 +104,17 @@ function Form({ submitHandler, resetStates }) {
         </div>
       </div>
 
-      <div className="field is-grouped">
+      <div className="field is-grouped mt-4">
         <p className="control">
           <input type="submit" className="button is-primary" value="Compute" />
         </p>
         <p className="control">
           <input type="reset" className="button is-light" onClick={() => { setErrors({}); resetStates(); }}/>
+        </p>
+        <p className="control">
+          <button className={'button' + (isInDepth? ' is-info is-selected' : '')} onClick={handleDepthChange}>
+            In-Depth
+          </button>
         </p>
       </div>
     </form>

@@ -81,7 +81,7 @@ function multiply(op1, op2, mode) {
   let a = '0'.repeat(n);
   let q = bin2;
   let q0 = '0';
-  const steps = [[{ substep: "Initial:", values: [a, q, q0] }]];
+  const steps = [[{ substep: 'Initial:', values: [a, q, q0] }]];
 
   // perform multiplication algorithm
   for (let i = 0; i < n; i++) {
@@ -90,19 +90,19 @@ function multiply(op1, op2, mode) {
     // check whether to add
     if (q[n - 1] === '0' && q0 === '1') {
       a = add(a, m);
-      pass.push({ substep: "Add +M:", values: [a, q, q0] });
+      pass.push({ substep: 'Add +M:', values: [a, q, q0] });
     } else if (q[n - 1] === '1' && q0 === '0') {
       a = add(a, m_neg);
-      pass.push({ substep: "Add -M:", values: [a, q, q0] });
+      pass.push({ substep: 'Add -M:', values: [a, q, q0] });
     } else {
-      pass.push({ substep: "Add 0:", values: [a, q, q0] });
+      pass.push({ substep: 'Add 0:', values: [a, q, q0] });
     }
 
     // shift
     q0 = q[n - 1];
     q = a[n - 1] + q.slice(0, n - 1);
     a = a[0] + a.slice(0, n - 1);
-    pass.push({ substep: "Shift:", values: [a, q, q0] });
+    pass.push({ substep: 'Shift:', values: [a, q, q0] });
 
     // add to result array
     steps.push(pass);
@@ -149,10 +149,10 @@ function downloadComputation(operands, mode, result) {
   for (let i = 1; i < n + 1; i++) {
     let label;
     switch (i) {
-      case 1: label = '1st'; break;
-      case 2: label = '2nd'; break;
-      case 3: label = '3rd'; break;
-      default: label = i + 'th';
+    case 1: label = '1st'; break;
+    case 2: label = '2nd'; break;
+    case 3: label = '3rd'; break;
+    default: label = i + 'th';
     }
     label += ' pass:\n';
 
