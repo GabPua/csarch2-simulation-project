@@ -1,5 +1,9 @@
-function InDepthRow({ substep, values, className }) {
+function InDepthRow({ printPass, step, substep, values, className }) {
   const cells = [<td className="has-text-weight-bold" style={{ width: '92px' }} key={substep}>{substep}</td>];
+
+  if (printPass) {
+    cells.unshift(<td key={'pass'} rowSpan={2}>Pass {step}: </td>);
+  }
 
   for (let i = 0; i < values.length - 1; i++) {
     for (let j = 0; j < values[i].length; j++) {
@@ -17,6 +21,7 @@ function InDepthRow({ substep, values, className }) {
 function InDepthCluster({ steps, counter }) {
   const tables = [];
   const n = steps.length - 1;
+  let printPass = true;
 
   for (let i = 0; i < n + 1; i++) {
     let className = '';
@@ -30,19 +35,22 @@ function InDepthCluster({ steps, counter }) {
     tables.push(
       <div className="table-container" key={'table' + i}>
         <table className="table is-bordered" style={{ width: '100%' }} >
-          {i == 0 &&
-            <thead>
+          <tbody>
+            {i == 0 &&
               <tr>
+                <td rowSpan={2}>Pass 0:</td>
                 <th>Step</th>
                 <th colSpan={n}>A</th>
                 <th colSpan={n}>Q</th>
                 <th>Q0</th>
               </tr>
-            </thead>
-          }
-          <tbody>
-            {steps[i].map(step => <InDepthRow key={i + step.substep} substep={step.substep}
-              values={step.values} className={className} />)}
+            }
+            {steps[i].map(step => {
+              printPass = !printPass;
+              return <InDepthRow key={i + step.substep} substep={step.substep} step={i} printPass={printPass}
+                values={step.values} className={className} />;
+            })
+            }
           </tbody>
         </table>
       </div>

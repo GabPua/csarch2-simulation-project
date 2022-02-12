@@ -1,5 +1,7 @@
 function InDepthRow(_ref) {
-  var substep = _ref.substep,
+  var printPass = _ref.printPass,
+      step = _ref.step,
+      substep = _ref.substep,
       values = _ref.values,
       className = _ref.className;
 
@@ -8,6 +10,16 @@ function InDepthRow(_ref) {
     { className: 'has-text-weight-bold', style: { width: '92px' }, key: substep },
     substep
   )];
+
+  if (printPass) {
+    cells.unshift(React.createElement(
+      'td',
+      { key: 'pass', rowSpan: 2 },
+      'Pass ',
+      step,
+      ': '
+    ));
+  }
 
   for (var i = 0; i < values.length - 1; i++) {
     for (var j = 0; j < values[i].length; j++) {
@@ -37,6 +49,7 @@ function InDepthCluster(_ref2) {
 
   var tables = [];
   var n = steps.length - 1;
+  var printPass = true;
 
   var _loop = function _loop(i) {
     var className = '';
@@ -53,12 +66,17 @@ function InDepthCluster(_ref2) {
       React.createElement(
         'table',
         { className: 'table is-bordered', style: { width: '100%' } },
-        i == 0 && React.createElement(
-          'thead',
+        React.createElement(
+          'tbody',
           null,
-          React.createElement(
+          i == 0 && React.createElement(
             'tr',
             null,
+            React.createElement(
+              'td',
+              { rowSpan: 2 },
+              'Pass 0:'
+            ),
             React.createElement(
               'th',
               null,
@@ -79,13 +97,10 @@ function InDepthCluster(_ref2) {
               null,
               'Q0'
             )
-          )
-        ),
-        React.createElement(
-          'tbody',
-          null,
+          ),
           steps[i].map(function (step) {
-            return React.createElement(InDepthRow, { key: i + step.substep, substep: step.substep,
+            printPass = !printPass;
+            return React.createElement(InDepthRow, { key: i + step.substep, substep: step.substep, step: i, printPass: printPass,
               values: step.values, className: className });
           })
         )
